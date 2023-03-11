@@ -9,11 +9,12 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+        VStack() {
+            Text("ABMediaPlayer")
+                .font(.title)
+            Text("v0.0.1-alpha (2023-03-11)")
+                .foregroundColor(Color.gray)
+            MediaRow()
         }
         .padding()
     }

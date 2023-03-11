@@ -1,0 +1,41 @@
+{
+    "id": "media-1234",
+    "name": "20230305_nono.mp4",
+    "contentType": "ABMediaPlayer/SingleMedia/v1",
+    "ABMediaPlayer/SingleMedia": {
+        "path": "https://cloud.winterkraut.de/index.php/s/fZGwEmkLs6spiR9/download?path=%2FNono%20(mp4%2C%20DDplus%20JOC)&files=20230305_nono.mp4",
+        "sha256sum": "971f6aab40dcd56b2ff6ac2249cb341850c812b690909ef7051ddec8b2acb7c6",
+        "mediainfo": {
+            "format": "MPEG-4",
+            "file_size": "256 MiB",
+            "duration": "34min9s",
+            "video_streams": {
+                "1": {
+                    "format": "AVC",
+                    "codec_id": "avc1",
+                    "width": 1280,
+                    "height": 720,
+                    "framerate": 25
+                }
+            },
+            "audio_streams": {
+                "1": {
+                    "format": "E-AC-3 JOC",
+                    "codec_id": "ec-3",
+                    "channels": 6,
+                    "channel_layout": "L C R LFE Ls Rs",
+                    "sample_rate": 48000
+                }
+            }
+        },
+        "concordances": [
+            {
+                "id": "nono_memlocs",
+                "name": "Memory Locations",
+                "break_points": [
+                    {"sort_number": 1, "name": "1a", "time": "1min6s.200ms"}
+                ]
+            }
+        ] 
+    }
+}
