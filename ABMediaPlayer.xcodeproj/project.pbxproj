@@ -7,15 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1134DE1329D6C53F00A5A712 /* ABMediaPlayer.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1134DE1129D6C53F00A5A712 /* ABMediaPlayer.xcdatamodeld */; };
+		1134DE5329D6CE1000A5A712 /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1134DE5229D6CE1000A5A712 /* PersistenceController.swift */; };
 		117693E629BCE0D300DE4036 /* ABMediaPlayerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117693E529BCE0D300DE4036 /* ABMediaPlayerApp.swift */; };
-		117693E829BCE0D300DE4036 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117693E729BCE0D300DE4036 /* ContentView.swift */; };
 		117693EA29BCE0D600DE4036 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 117693E929BCE0D600DE4036 /* Assets.xcassets */; };
 		117693EE29BCE0D600DE4036 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 117693ED29BCE0D600DE4036 /* Preview Assets.xcassets */; };
 		117693F829BCE0D600DE4036 /* ABMediaPlayerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117693F729BCE0D600DE4036 /* ABMediaPlayerTests.swift */; };
 		1176940229BCE0D600DE4036 /* ABMediaPlayerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1176940129BCE0D600DE4036 /* ABMediaPlayerUITests.swift */; };
 		1176940429BCE0D600DE4036 /* ABMediaPlayerUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1176940329BCE0D600DE4036 /* ABMediaPlayerUITestsLaunchTests.swift */; };
-		1176941129BCE45B00DE4036 /* SingleMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1176941029BCE45B00DE4036 /* SingleMedia.swift */; };
-		1176941329BCE4F300DE4036 /* MediaRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1176941229BCE4F300DE4036 /* MediaRow.swift */; };
+		118B83EC29D6EBC60093C8A7 /* ManageMediaSingleItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 118B83EB29D6EBC60093C8A7 /* ManageMediaSingleItemView.swift */; };
+		11BEC11E29D19D7400580119 /* MediaItemRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11BEC11D29D19D7400580119 /* MediaItemRowView.swift */; };
+		11D8F83229CA39980031AF9D /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D8F83129CA39980031AF9D /* RootView.swift */; };
+		11D8F83429CA3D680031AF9D /* ManageMediaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D8F83329CA3D680031AF9D /* ManageMediaView.swift */; };
+		11D8F83829CA49FD0031AF9D /* AlignMediaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D8F83729CA49FD0031AF9D /* AlignMediaView.swift */; };
+		11D8F83A29CA4A850031AF9D /* MediaAlignmentItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D8F83929CA4A850031AF9D /* MediaAlignmentItem.swift */; };
+		11D8F83C29CA50200031AF9D /* AlignMediaDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D8F83B29CA50200031AF9D /* AlignMediaDetailView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,9 +42,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1134DE1229D6C53F00A5A712 /* ABMediaPlayer.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ABMediaPlayer.xcdatamodel; sourceTree = "<group>"; };
+		1134DE5229D6CE1000A5A712 /* PersistenceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
 		117693E229BCE0D300DE4036 /* ABMediaPlayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ABMediaPlayer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		117693E529BCE0D300DE4036 /* ABMediaPlayerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ABMediaPlayerApp.swift; sourceTree = "<group>"; };
-		117693E729BCE0D300DE4036 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		117693E929BCE0D600DE4036 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		117693EB29BCE0D600DE4036 /* ABMediaPlayer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ABMediaPlayer.entitlements; sourceTree = "<group>"; };
 		117693ED29BCE0D600DE4036 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -47,8 +54,14 @@
 		117693FD29BCE0D600DE4036 /* ABMediaPlayerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ABMediaPlayerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1176940129BCE0D600DE4036 /* ABMediaPlayerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ABMediaPlayerUITests.swift; sourceTree = "<group>"; };
 		1176940329BCE0D600DE4036 /* ABMediaPlayerUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ABMediaPlayerUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		1176941029BCE45B00DE4036 /* SingleMedia.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleMedia.swift; sourceTree = "<group>"; };
-		1176941229BCE4F300DE4036 /* MediaRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaRow.swift; sourceTree = "<group>"; };
+		11796E8B29D78C9B0068B55A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		118B83EB29D6EBC60093C8A7 /* ManageMediaSingleItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageMediaSingleItemView.swift; sourceTree = "<group>"; };
+		11BEC11D29D19D7400580119 /* MediaItemRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaItemRowView.swift; sourceTree = "<group>"; };
+		11D8F83129CA39980031AF9D /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		11D8F83329CA3D680031AF9D /* ManageMediaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageMediaView.swift; sourceTree = "<group>"; };
+		11D8F83729CA49FD0031AF9D /* AlignMediaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlignMediaView.swift; sourceTree = "<group>"; };
+		11D8F83929CA4A850031AF9D /* MediaAlignmentItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaAlignmentItem.swift; sourceTree = "<group>"; };
+		11D8F83B29CA50200031AF9D /* AlignMediaDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlignMediaDetailView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,13 +112,20 @@
 		117693E429BCE0D300DE4036 /* ABMediaPlayer */ = {
 			isa = PBXGroup;
 			children = (
-				117693E529BCE0D300DE4036 /* ABMediaPlayerApp.swift */,
-				117693E729BCE0D300DE4036 /* ContentView.swift */,
-				1176941029BCE45B00DE4036 /* SingleMedia.swift */,
-				1176941229BCE4F300DE4036 /* MediaRow.swift */,
-				117693E929BCE0D600DE4036 /* Assets.xcassets */,
+				11796E8B29D78C9B0068B55A /* Info.plist */,
 				117693EB29BCE0D600DE4036 /* ABMediaPlayer.entitlements */,
+				1134DE1129D6C53F00A5A712 /* ABMediaPlayer.xcdatamodeld */,
+				117693E529BCE0D300DE4036 /* ABMediaPlayerApp.swift */,
+				11D8F83B29CA50200031AF9D /* AlignMediaDetailView.swift */,
+				11D8F83729CA49FD0031AF9D /* AlignMediaView.swift */,
+				117693E929BCE0D600DE4036 /* Assets.xcassets */,
+				118B83EB29D6EBC60093C8A7 /* ManageMediaSingleItemView.swift */,
+				11D8F83329CA3D680031AF9D /* ManageMediaView.swift */,
+				11D8F83929CA4A850031AF9D /* MediaAlignmentItem.swift */,
+				11BEC11D29D19D7400580119 /* MediaItemRowView.swift */,
+				1134DE5229D6CE1000A5A712 /* PersistenceController.swift */,
 				117693EC29BCE0D600DE4036 /* Preview Content */,
+				11D8F83129CA39980031AF9D /* RootView.swift */,
 			);
 			path = ABMediaPlayer;
 			sourceTree = "<group>";
@@ -265,10 +285,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				117693E829BCE0D300DE4036 /* ContentView.swift in Sources */,
-				1176941329BCE4F300DE4036 /* MediaRow.swift in Sources */,
-				1176941129BCE45B00DE4036 /* SingleMedia.swift in Sources */,
+				1134DE1329D6C53F00A5A712 /* ABMediaPlayer.xcdatamodeld in Sources */,
+				11D8F83229CA39980031AF9D /* RootView.swift in Sources */,
+				11D8F83C29CA50200031AF9D /* AlignMediaDetailView.swift in Sources */,
+				11D8F83829CA49FD0031AF9D /* AlignMediaView.swift in Sources */,
+				11BEC11E29D19D7400580119 /* MediaItemRowView.swift in Sources */,
+				118B83EC29D6EBC60093C8A7 /* ManageMediaSingleItemView.swift in Sources */,
+				11D8F83A29CA4A850031AF9D /* MediaAlignmentItem.swift in Sources */,
+				11D8F83429CA3D680031AF9D /* ManageMediaView.swift in Sources */,
 				117693E629BCE0D300DE4036 /* ABMediaPlayerApp.swift in Sources */,
+				1134DE5329D6CE1000A5A712 /* PersistenceController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -427,6 +453,8 @@
 				DEVELOPMENT_TEAM = TA6YGR2VKH;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ABMediaPlayer/Info.plist;
+				INFOPLIST_KEY_NSAppleMusicUsageDescription = "Access media items";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -437,10 +465,10 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 13.1;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = de.lexngu.ABMediaPlayer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -465,6 +493,8 @@
 				DEVELOPMENT_TEAM = TA6YGR2VKH;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ABMediaPlayer/Info.plist;
+				INFOPLIST_KEY_NSAppleMusicUsageDescription = "Access media items";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -475,10 +505,10 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 13.1;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = de.lexngu.ABMediaPlayer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -620,6 +650,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		1134DE1129D6C53F00A5A712 /* ABMediaPlayer.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				1134DE1229D6C53F00A5A712 /* ABMediaPlayer.xcdatamodel */,
+			);
+			currentVersion = 1134DE1229D6C53F00A5A712 /* ABMediaPlayer.xcdatamodel */;
+			path = ABMediaPlayer.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 117693DA29BCE0D300DE4036 /* Project object */;
 }

@@ -9,9 +9,12 @@ import SwiftUI
 
 @main
 struct ABMediaPlayerApp: App {
+    let persistenceController = PersistenceController.shared
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            RootView()
+                .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }
 }
