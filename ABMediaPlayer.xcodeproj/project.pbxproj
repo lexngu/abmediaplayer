@@ -112,20 +112,14 @@
 		117693E429BCE0D300DE4036 /* ABMediaPlayer */ = {
 			isa = PBXGroup;
 			children = (
+				11EC440729D9B7A900120B19 /* Controller */,
+				11EC440629D9B79800120B19 /* Model */,
+				11EC440529D9B78500120B19 /* View */,
 				11796E8B29D78C9B0068B55A /* Info.plist */,
 				117693EB29BCE0D600DE4036 /* ABMediaPlayer.entitlements */,
-				1134DE1129D6C53F00A5A712 /* ABMediaPlayer.xcdatamodeld */,
 				117693E529BCE0D300DE4036 /* ABMediaPlayerApp.swift */,
-				11D8F83B29CA50200031AF9D /* AlignMediaDetailView.swift */,
-				11D8F83729CA49FD0031AF9D /* AlignMediaView.swift */,
 				117693E929BCE0D600DE4036 /* Assets.xcassets */,
-				118B83EB29D6EBC60093C8A7 /* ManageMediaSingleItemView.swift */,
-				11D8F83329CA3D680031AF9D /* ManageMediaView.swift */,
-				11D8F83929CA4A850031AF9D /* MediaAlignmentItem.swift */,
-				11BEC11D29D19D7400580119 /* MediaItemRowView.swift */,
-				1134DE5229D6CE1000A5A712 /* PersistenceController.swift */,
 				117693EC29BCE0D600DE4036 /* Preview Content */,
-				11D8F83129CA39980031AF9D /* RootView.swift */,
 			);
 			path = ABMediaPlayer;
 			sourceTree = "<group>";
@@ -153,6 +147,36 @@
 				1176940329BCE0D600DE4036 /* ABMediaPlayerUITestsLaunchTests.swift */,
 			);
 			path = ABMediaPlayerUITests;
+			sourceTree = "<group>";
+		};
+		11EC440529D9B78500120B19 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				1134DE1129D6C53F00A5A712 /* ABMediaPlayer.xcdatamodeld */,
+				11D8F83929CA4A850031AF9D /* MediaAlignmentItem.swift */,
+				11D8F83B29CA50200031AF9D /* AlignMediaDetailView.swift */,
+				11D8F83729CA49FD0031AF9D /* AlignMediaView.swift */,
+				118B83EB29D6EBC60093C8A7 /* ManageMediaSingleItemView.swift */,
+				11D8F83329CA3D680031AF9D /* ManageMediaView.swift */,
+				11BEC11D29D19D7400580119 /* MediaItemRowView.swift */,
+				11D8F83129CA39980031AF9D /* RootView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		11EC440629D9B79800120B19 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		11EC440729D9B7A900120B19 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				1134DE5229D6CE1000A5A712 /* PersistenceController.swift */,
+			);
+			path = Controller;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
