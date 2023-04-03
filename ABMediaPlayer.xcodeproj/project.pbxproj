@@ -23,6 +23,9 @@
 		11D8F83C29CA50200031AF9D /* ManageAlignmentBaseDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D8F83B29CA50200031AF9D /* ManageAlignmentBaseDetailView.swift */; };
 		11EC440929D9DC5C00120B19 /* NewAlignmentBaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11EC440829D9DC5C00120B19 /* NewAlignmentBaseView.swift */; };
 		11EC440B29D9EB0C00120B19 /* NewMediaAlignmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11EC440A29D9EB0C00120B19 /* NewMediaAlignmentView.swift */; };
+		11EC440D29DAC80C00120B19 /* PlayMediaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11EC440C29DAC80C00120B19 /* PlayMediaView.swift */; };
+		11EC440F29DACA2A00120B19 /* DisplayAlignmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11EC440E29DACA2A00120B19 /* DisplayAlignmentView.swift */; };
+		11EC441129DACAE200120B19 /* AlignmentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11EC441029DACAE200120B19 /* AlignmentModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,6 +67,9 @@
 		11D8F83B29CA50200031AF9D /* ManageAlignmentBaseDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageAlignmentBaseDetailView.swift; sourceTree = "<group>"; };
 		11EC440829D9DC5C00120B19 /* NewAlignmentBaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewAlignmentBaseView.swift; sourceTree = "<group>"; };
 		11EC440A29D9EB0C00120B19 /* NewMediaAlignmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMediaAlignmentView.swift; sourceTree = "<group>"; };
+		11EC440C29DAC80C00120B19 /* PlayMediaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayMediaView.swift; sourceTree = "<group>"; };
+		11EC440E29DACA2A00120B19 /* DisplayAlignmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayAlignmentView.swift; sourceTree = "<group>"; };
+		11EC441029DACAE200120B19 /* AlignmentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AlignmentModel.swift; path = ABMediaPlayer/Model/AlignmentModel.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -162,6 +168,8 @@
 				11D8F83329CA3D680031AF9D /* ManageMediaView.swift */,
 				11BEC11D29D19D7400580119 /* MediaItemRowView.swift */,
 				11D8F83129CA39980031AF9D /* RootView.swift */,
+				11EC440C29DAC80C00120B19 /* PlayMediaView.swift */,
+				11EC440E29DACA2A00120B19 /* DisplayAlignmentView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -169,6 +177,7 @@
 		11EC440629D9B79800120B19 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				11EC441029DACAE200120B19 /* AlignmentModel.swift */,
 				1134DE1129D6C53F00A5A712 /* ABMediaPlayer.xcdatamodeld */,
 			);
 			path = Model;
@@ -317,12 +326,15 @@
 				11EC440B29D9EB0C00120B19 /* NewMediaAlignmentView.swift in Sources */,
 				11EC440929D9DC5C00120B19 /* NewAlignmentBaseView.swift in Sources */,
 				11D8F83C29CA50200031AF9D /* ManageAlignmentBaseDetailView.swift in Sources */,
+				11EC440F29DACA2A00120B19 /* DisplayAlignmentView.swift in Sources */,
 				11D8F83829CA49FD0031AF9D /* ManageAlignmentBaseView.swift in Sources */,
+				11EC441129DACAE200120B19 /* AlignmentModel.swift in Sources */,
 				11BEC11E29D19D7400580119 /* MediaItemRowView.swift in Sources */,
 				118B83EC29D6EBC60093C8A7 /* ManageMediaSingleItemView.swift in Sources */,
 				11D8F83429CA3D680031AF9D /* ManageMediaView.swift in Sources */,
 				117693E629BCE0D300DE4036 /* ABMediaPlayerApp.swift in Sources */,
 				1134DE5329D6CE1000A5A712 /* PersistenceController.swift in Sources */,
+				11EC440D29DAC80C00120B19 /* PlayMediaView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

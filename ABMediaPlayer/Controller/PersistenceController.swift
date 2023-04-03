@@ -14,27 +14,43 @@ struct PersistenceController {
         let result = PersistenceController(inMemory: true)
         let viewContext = result.container.viewContext
         
-        for _ in 0..<3 {
+        var mediaItems: [MediaItem] = []
+        for i in 0..<2 {
             let newItem = MediaItem(context: viewContext)
             newItem.id = UUID()
-            newItem.name = "20230305_nono.mp4"
-            newItem.size = 268343715
+            newItem.name = "video_\(i).mp4"
+            newItem.size = 1234
             newItem.format = "MPEG-4"
-            newItem.duration = 2049.183
+            newItem.duration = 24
+            mediaItems.append(newItem)
         }
-        for i in 0..<3 {
+        
+        var alignmentBases: [AlignmentBase] = []
+        for i in 0..<1 {
             let newItem = AlignmentBase(context: viewContext)
             newItem.id = UUID()
             newItem.name = "Base \(i+1)"
+            newItem.markers = "1\n2\n4"
+            alignmentBases.append(newItem)
         }
-        let newMediaAlignment = MediaAlignment(context: viewContext)
+        
+        var mediaAlignments: [MediaAlignment] = []
+        // first media alignment
+        var newMediaAlignment = MediaAlignment(context: viewContext)
         newMediaAlignment.id = UUID()
-        do {
-            newMediaAlignment.mediaItem = try viewContext.fetch(MediaItem.fetchRequest()).first!
-            newMediaAlignment.alignmentBase = try viewContext.fetch(AlignmentBase.fetchRequest()).first!
-        } catch {
-            print("Error while creating media alignment entity: \(error)")
-        }
+        newMediaAlignment.markers = "1,0\n2,10\n4,20"
+        newMediaAlignment.mediaItem = mediaItems[0]
+        newMediaAlignment.alignmentBase = alignmentBases[0]
+        mediaAlignments.append(newMediaAlignment)
+        
+        // second media alignment
+        newMediaAlignment = MediaAlignment(context: viewContext)
+        newMediaAlignment.id = UUID()
+        newMediaAlignment.markers = "1,1\n2,12\n4,23"
+        newMediaAlignment.mediaItem = mediaItems[1]
+        newMediaAlignment.alignmentBase = alignmentBases[0]
+        mediaAlignments.append(newMediaAlignment)
+        
         do {
             try viewContext.save()
         } catch {

@@ -10,14 +10,12 @@ import SwiftUI
 enum Tabs: String {
     case media
     case alignment
+    case play
 }
 
 struct RootView: View {
     @Environment(\.managedObjectContext) private var viewContext
-    
-    @State private var selectedSidebarItem: String?
-    let sidebarItems = ["Manage media", "Align media", "Play media"]
-    
+
     @State private var selectedTab = Tabs.media
     
     var body: some View {
@@ -27,6 +25,9 @@ struct RootView: View {
             }
             ManageAlignmentBaseView().tag(Tabs.alignment).tabItem {
                 Text("Alignment")
+            }
+            PlayMediaView().tag(Tabs.play).tabItem {
+                Text("Play")
             }
         }
     }
