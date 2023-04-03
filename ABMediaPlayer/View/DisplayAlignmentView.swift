@@ -42,7 +42,11 @@ struct DisplayAlignmentView: View {
             Button(action: { currentTime! -= 1 }, label: { Text("-1") })
             Button(action: { currentTime! += 1 }, label: { Text("+1") })
             Button(action: {
-                currentMediaItem = alignmentModel.allMediaItems.shuffled().first
+                let targetMediaItem = alignmentModel.allMediaItems.shuffled().first
+                let alignedMarkerInformation = alignmentModel.alignedMarkerProgress(sourceMediaItem: currentMediaItem!, marker: currentMarker!, time: currentTime!, targetMediaItem: targetMediaItem!)
+                
+                currentMediaItem = targetMediaItem
+                currentTime = alignedMarkerInformation.targetMarkerTime
             }, label: { Text("Swap media item") })
             Canvas { context, size in
                 // init
