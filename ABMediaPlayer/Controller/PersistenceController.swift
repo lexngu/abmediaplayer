@@ -13,12 +13,27 @@ struct PersistenceController {
     static var preview: PersistenceController = {
         let result = PersistenceController(inMemory: true)
         let viewContext = result.container.viewContext
+        
         for _ in 0..<3 {
             let newItem = MediaItem(context: viewContext)
+            newItem.id = UUID()
             newItem.name = "20230305_nono.mp4"
             newItem.size = 268343715
             newItem.format = "MPEG-4"
             newItem.duration = 2049.183
+        }
+        for i in 0..<3 {
+            let newItem = AlignmentBase(context: viewContext)
+            newItem.id = UUID()
+            newItem.name = "Base \(i+1)"
+        }
+        let newMediaAlignment = MediaAlignment(context: viewContext)
+        newMediaAlignment.id = UUID()
+        do {
+            newMediaAlignment.mediaItem = try viewContext.fetch(MediaItem.fetchRequest()).first!
+            newMediaAlignment.alignmentBase = try viewContext.fetch(AlignmentBase.fetchRequest()).first!
+        } catch {
+            print("Error while creating media alignment entity: \(error)")
         }
         do {
             try viewContext.save()

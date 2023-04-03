@@ -26,9 +26,6 @@ struct ManageMediaView: View {
             label: {
                 Label("Add local media", systemImage: "doc.badge.plus")
             }.fileImporter(isPresented: $fileImporterIsShowing, allowedContentTypes: [UTType.audiovisualContent], onCompletion: fileImporterCompleted)
-                Button(action: addRemoteMediaButtonClicked) {
-                    Label("Add remote media", systemImage: "arrow.down.doc")
-                }
                 ForEach(availableMediaItems) { item in
                     NavigationLink {
                         ManageMediaSingleItemView(mediaItem: item).environment(\.managedObjectContext, PersistenceController.shared.container.viewContext)
@@ -78,10 +75,6 @@ struct ManageMediaView: View {
             let nsError = error as NSError
             fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
         }
-    }
-    
-    func addRemoteMediaButtonClicked() {
-        
     }
 }
 
