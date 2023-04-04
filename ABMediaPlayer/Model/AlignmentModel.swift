@@ -11,23 +11,23 @@ struct AlignedMarkerInformation  {
     var sourceMediaItem: MediaItem
     var targetMediaItem: MediaItem
     
-    var sourceMarkerTimeUntilNextMarker: Float
-    var sourceMarkerTime: Float
+    var sourceMarkerTimeUntilNextMarker: Double
+    var sourceMarkerTime: Double
     
-    var targetMarkerTimeUntilNextMarker: Float
-    var targetMarkerTime: Float
+    var targetMarkerTimeUntilNextMarker: Double
+    var targetMarkerTime: Double
     
-    var markerProgressPercentage: Float
+    var markerProgressPercentage: Double
 }
 
 class AlignmentModel: ObservableObject {
     private var alignmentBase: AlignmentBase
     
     let allMarkers: [String]
-    let allMarkerTimes: [Float]
+    let allMarkerTimes: [Double]
     let allMediaItems: [MediaItem]
     
-    let markerToMarkerTime: [MediaItem: [String: Float]]
+    let markerToMarkerTime: [MediaItem: [String: Double]]
     
     init(alignmentBase: AlignmentBase) {
         self.alignmentBase = alignmentBase
@@ -52,12 +52,12 @@ class AlignmentModel: ObservableObject {
         
     }
     
-    private static func buildMarkerToMarkerTime(mediaAlignments: [MediaAlignment]) -> [MediaItem: [String: Float]] {
-        var result: [MediaItem: [String: Float]] = [:]
+    private static func buildMarkerToMarkerTime(mediaAlignments: [MediaAlignment]) -> [MediaItem: [String: Double]] {
+        var result: [MediaItem: [String: Double]] = [:]
         var expectedMarkerCount: Int?
         
         for ma in mediaAlignments {
-            var _markerToMarkerTime: [String: Float] = [:]
+            var _markerToMarkerTime: [String: Double] = [:]
             
             let maMarkers = ma.markers!.components(separatedBy: "\n")
             expectedMarkerCount = expectedMarkerCount ?? maMarkers.count
@@ -67,7 +67,7 @@ class AlignmentModel: ObservableObject {
             for maMarker in maMarkers {
                 let markerAndTime = maMarker.components(separatedBy: ",")
                 let marker = markerAndTime[0]
-                let time = Float(markerAndTime[1])
+                let time = Double(markerAndTime[1])
                 
                 _markerToMarkerTime[marker] = time
             }
@@ -78,8 +78,8 @@ class AlignmentModel: ObservableObject {
         return result
     }
     
-    private static func buildAllMarkerTimes(markerToMarkerTime: [MediaItem: [String: Float]]) -> [Float] {
-        var _allMarkerTimes: Set<Float> = Set()
+    private static func buildAllMarkerTimes(markerToMarkerTime: [MediaItem: [String: Double]]) -> [Double] {
+        var _allMarkerTimes: Set<Double> = Set()
         
         for mtmtEntry in markerToMarkerTime {
             for time in Array(mtmtEntry.value.values) {
@@ -90,7 +90,7 @@ class AlignmentModel: ObservableObject {
         return Array(_allMarkerTimes).sorted()
     }
     
-    func inferLatestMarker(time: Float, mediaItem: MediaItem) -> String? {
+    func inferLatestMarker(time: Double, mediaItem: MediaItem) -> String? {
         if markerToMarkerTime[mediaItem] == nil {
             print("Error! Marker information requested for a non-existing mediaItem!")
             return nil
@@ -112,7 +112,7 @@ class AlignmentModel: ObservableObject {
         return Array(miMarkerToTime.keys)[latestMarkerIdx]
     }
     
-    func calculateAlignedMarkerInformation(sourceMediaItem: MediaItem, marker: String, time: Float, targetMediaItem: MediaItem) -> AlignedMarkerInformation {
+    func calculateAlignedMarkerInformation(sourceMediaItem: MediaItem, marker: String, time: Double, targetMediaItem: MediaItem) -> AlignedMarkerInformation {
         var result = AlignedMarkerInformation(sourceMediaItem: sourceMediaItem, targetMediaItem: targetMediaItem, sourceMarkerTimeUntilNextMarker: 0, sourceMarkerTime: time, targetMarkerTimeUntilNextMarker: 0, targetMarkerTime: 0, markerProgressPercentage: 0)
         
         let markerIndex = allMarkers.firstIndex(of: marker)
@@ -128,10 +128,10 @@ class AlignmentModel: ObservableObject {
         }
         let smiMarkerToTime = markerToMarkerTime[sourceMediaItem]!
         let tmiMarkerToTime = markerToMarkerTime[targetMediaItem]!
-        let smiStartMarkerTime: Float = smiMarkerToTime[marker]!
-        let tmiStartMarkerTime: Float = tmiMarkerToTime[marker]!
+        let smiStartMarkerTime: Double = smiMarkerToTime[marker]!
+        let tmiStartMarkerTime: Double = tmiMarkerToTime[marker]!
         
-        var smiNextMarkerTime, tmiNextMarkerTime: Float
+        var smiNextMarkerTime, tmiNextMarkerTime: Double
         if nextMarkerIndex < allMarkers.endIndex { // time of next marker - or else time at end of media item (= duration)
             let nextMarker: String = allMarkers[nextMarkerIndex]
             

@@ -9,7 +9,7 @@ import SwiftUI
 import AVFoundation
 import AVKit
 
-func secondsToTimecodeString(time: Float) -> String {
+func secondsToTimecodeString(time: Double) -> String {
     let seconds = time.truncatingRemainder(dividingBy: 60)
     let minutes = (time - seconds).truncatingRemainder(dividingBy: 60*60) / 60
     let hours = (time > 3600) ? (time - seconds - minutes) / (60*60) : 0
@@ -23,14 +23,14 @@ struct DisplayAlignmentView: View {
     
     // UI constants
     private var singleSecondWidth: Double = 15
-    private var timecodeEveryNSeconds: Int = 5
+    private var timecodeEveryNSeconds: Double = 5
     
     // State
     @State private var currentMediaItem: MediaItem?
-    @State private var currentTime: Float = 0
+    @State private var currentTime: Double = 0
     @State private var currentMarker: String?
     
-    @State private var timeOffset: Float = 0
+    @State private var timeOffset: Double = 0
     
     @State private var player = AVPlayer(url: URL(string: "https://cloud.winterkraut.de/index.php/s/fZGwEmkLs6spiR9/download?path=%2FNono%20(mp4%2C%20DDplus%20JOC)&files=20230305_nono.mp4")!)
     
@@ -40,7 +40,7 @@ struct DisplayAlignmentView: View {
             ZStack(alignment: .topLeading) {
                 Canvas { context, size in
                     // horizontal scrolling
-                    let visibleTimeSpan = Float(size.width / singleSecondWidth)
+                    let visibleTimeSpan = size.width / singleSecondWidth
                     let earliestVisibleTime = timeOffset
                     let latestVisibleTime = timeOffset + visibleTimeSpan
 
@@ -62,9 +62,9 @@ struct DisplayAlignmentView: View {
 
                     context.transform = context.transform.translatedBy(x: 10, y: 115)
                     let latestMarkerTime = alignmentModel.allMarkerTimes.last
-                    let timecodeDrawingCount: Int = Int((latestMarkerTime! / Float(timecodeEveryNSeconds)).rounded()) + 1
+                    let timecodeDrawingCount: Int = Int((latestMarkerTime! / Double(timecodeEveryNSeconds)).rounded()) + 1
                     for i in 0..<timecodeDrawingCount {
-                        context.draw(Text("| " + secondsToTimecodeString(time: Float(i*timecodeEveryNSeconds))).font(.system(size: 12)).foregroundColor(.gray), at: CGPoint(x: Double(Float(i * timecodeEveryNSeconds) - timeOffset) * singleSecondWidth, y: 0), anchor: .topLeading)
+                        context.draw(Text("| " + secondsToTimecodeString(time: Double(i)*timecodeEveryNSeconds)).font(.system(size: 12)).foregroundColor(.gray), at: CGPoint(x: ((Double(i) * timecodeEveryNSeconds) - timeOffset) * singleSecondWidth, y: 0), anchor: .topLeading)
                     }
 
                     // media item row
@@ -72,11 +72,11 @@ struct DisplayAlignmentView: View {
                     for mediaItem in alignmentModel.allMediaItems {
                         let mediaItemMarkerToMarkerTimes = alignmentModel.markerToMarkerTime[mediaItem]
                         for (marker, time) in (mediaItemMarkerToMarkerTimes ?? [:]) {
-                            context.draw(Text("| " + marker).foregroundColor(.gray), at: CGPoint(x: Double(time - timeOffset) * singleSecondWidth, y: 20), anchor: .topLeading)
+                            context.draw(Text("| " + marker).foregroundColor(.gray), at: CGPoint(x: (time - timeOffset) * singleSecondWidth, y: 20), anchor: .topLeading)
 
                             if currentMarker == marker && currentMediaItem != nil && currentMarker != nil {
                                 let alignedMarkerInformation = alignmentModel.calculateAlignedMarkerInformation(sourceMediaItem: currentMediaItem!, marker: currentMarker!, time: currentTime, targetMediaItem: mediaItem)
-                                context.draw(Image(systemName: "play"), at: CGPoint(x: Double(alignedMarkerInformation.targetMarkerTime - timeOffset) * singleSecondWidth, y: 20), anchor: .topLeading)
+                                context.draw(Image(systemName: "play"), at: CGPoint(x: (alignedMarkerInformation.targetMarkerTime - timeOffset) * singleSecondWidth, y: 20), anchor: .topLeading)
                             }
                         }
 
@@ -107,7 +107,7 @@ struct DisplayAlignmentView: View {
             }
             
             player.addPeriodicTimeObserver(forInterval: CMTime(seconds: 1, preferredTimescale: CMTimeScale(NSEC_PER_SEC)), queue: .main) { _ in
-                let playerCurrentTimeSeconds = Float(player.currentTime().seconds)
+                let playerCurrentTimeSeconds = Double(player.currentTime().seconds)
 
                 // update currentTime
                 currentTime = playerCurrentTimeSeconds
@@ -125,11 +125,11 @@ struct DisplayAlignmentView: View {
         self.alignmentModel = alignmentModel
     }
     
-    func setCurrentTime(newCurrentTime: Float) {
+    func setCurrentTime(newCurrentTime: Double) {
         currentTime = newCurrentTime
         
         if player.currentItem != nil {
-            player.seek(to: CMTime(seconds: Double(newCurrentTime), preferredTimescale: CMTimeScale(NSEC_PER_SEC)))
+            player.seek(to: CMTime(seconds: newCurrentTime, preferredTimescale: CMTimeScale(NSEC_PER_SEC)))
         }
     }
     
