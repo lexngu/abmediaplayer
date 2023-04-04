@@ -20,7 +20,7 @@ struct AlignedMarkerInformation  {
     var markerProgressPercentage: Float
 }
 
-class AlignmentModel {
+class AlignmentModel: ObservableObject {
     private var alignmentBase: AlignmentBase
     
     let allMarkers: [String]
@@ -29,42 +29,70 @@ class AlignmentModel {
     
     let markerToMarkerTime: [MediaItem: [String: Float]]
     
-    var horizontalScalingFactor: Float = 1.0
-    
     init(alignmentBase: AlignmentBase) {
         self.alignmentBase = alignmentBase
+        
         let mediaAlignments = alignmentBase.mediaAlignments?.sortedArray(using: [NSSortDescriptor(keyPath: \MediaAlignment.objectID, ascending: true)]) as! [MediaAlignment]
-        
         allMarkers = alignmentBase.markers?.components(separatedBy: "\n") ?? []
+        allMediaItems = mediaAlignments.map {o in o.mediaItem!}.sorted { $0.name! < $1.name! }
         
-        allMediaItems = mediaAlignments.map {i in i.mediaItem!}
+        // Plausibility checks
+        if mediaAlignments.count == 0 {
+            print("Warning! Media alignment count should not be zero!")
+        }
+        if allMarkers.count == 0 {
+            print("Warning! Marker count should not be zero!")
+        }
+        if allMediaItems.count == 0 {
+            print("Warning! Media item count should not be zero!")
+        }
         
-        var mtmt: [MediaItem: [String: Float]] = [:]
+        markerToMarkerTime = AlignmentModel.buildMarkerToMarkerTime(mediaAlignments: mediaAlignments)
+        allMarkerTimes = AlignmentModel.buildAllMarkerTimes(markerToMarkerTime: markerToMarkerTime)
+        
+    }
+    
+    private static func buildMarkerToMarkerTime(mediaAlignments: [MediaAlignment]) -> [MediaItem: [String: Float]] {
+        var result: [MediaItem: [String: Float]] = [:]
+        var expectedMarkerCount: Int?
+        
         for ma in mediaAlignments {
             var _markerToMarkerTime: [String: Float] = [:]
+            
             let maMarkers = ma.markers!.components(separatedBy: "\n")
+            expectedMarkerCount = expectedMarkerCount ?? maMarkers.count
+            if expectedMarkerCount != maMarkers.count {
+                print("Warning! Markers count differ!")
+            }
             for maMarker in maMarkers {
                 let markerAndTime = maMarker.components(separatedBy: ",")
                 let marker = markerAndTime[0]
                 let time = Float(markerAndTime[1])
+                
                 _markerToMarkerTime[marker] = time
             }
-            mtmt[ma.mediaItem!] = _markerToMarkerTime
+
+            result[ma.mediaItem!] = _markerToMarkerTime
         }
-        markerToMarkerTime = mtmt
         
+        return result
+    }
+    
+    private static func buildAllMarkerTimes(markerToMarkerTime: [MediaItem: [String: Float]]) -> [Float] {
         var _allMarkerTimes: Set<Float> = Set()
+        
         for mtmtEntry in markerToMarkerTime {
             for time in Array(mtmtEntry.value.values) {
                 _allMarkerTimes.insert(time)
             }
         }
-        allMarkerTimes = Array(_allMarkerTimes).sorted()
+        
+        return Array(_allMarkerTimes).sorted()
     }
     
-    func latestMarker(time: Float, mediaItem: MediaItem) -> String? {
+    func inferLatestMarker(time: Float, mediaItem: MediaItem) -> String? {
         if markerToMarkerTime[mediaItem] == nil {
-            print("error in function latestMarker!")
+            print("Error! Marker information requested for a non-existing mediaItem!")
             return nil
         }
         let miMarkerToTime = markerToMarkerTime[mediaItem]!
@@ -84,37 +112,39 @@ class AlignmentModel {
         return Array(miMarkerToTime.keys)[latestMarkerIdx]
     }
     
-    func alignedMarkerProgress(sourceMediaItem: MediaItem, marker: String, time: Float, targetMediaItem: MediaItem) -> AlignedMarkerInformation {
+    func calculateAlignedMarkerInformation(sourceMediaItem: MediaItem, marker: String, time: Float, targetMediaItem: MediaItem) -> AlignedMarkerInformation {
         var result = AlignedMarkerInformation(sourceMediaItem: sourceMediaItem, targetMediaItem: targetMediaItem, sourceMarkerTimeUntilNextMarker: 0, sourceMarkerTime: time, targetMarkerTimeUntilNextMarker: 0, targetMarkerTime: 0, markerProgressPercentage: 0)
         
-        if markerToMarkerTime[sourceMediaItem] == nil || markerToMarkerTime[targetMediaItem] == nil {
-            print("error in function alignedMarkerProgress!")
+        let markerIndex = allMarkers.firstIndex(of: marker)
+        if markerIndex == nil {
+            print("Error! Marker does not exist!")
             return result
         }
-        
+        let nextMarkerIndex = allMarkers.index(after: markerIndex!)
+
+        if markerToMarkerTime[sourceMediaItem] == nil || markerToMarkerTime[targetMediaItem] == nil {
+            print("Error! sourceMediaItem or targetMediaItem is nil!")
+            return result
+        }
         let smiMarkerToTime = markerToMarkerTime[sourceMediaItem]!
         let tmiMarkerToTime = markerToMarkerTime[targetMediaItem]!
-        
-        let smiStartMarkerIndex = smiMarkerToTime.keys.firstIndex(of: marker)!
         let smiStartMarkerTime: Float = smiMarkerToTime[marker]!
         let tmiStartMarkerTime: Float = tmiMarkerToTime[marker]!
         
         var smiNextMarkerTime, tmiNextMarkerTime: Float
-        let smiNextMarkerIndex = smiMarkerToTime.keys.index(after: smiStartMarkerIndex)
-        if smiNextMarkerIndex < smiMarkerToTime.endIndex {
-            let nextMarker: String = smiMarkerToTime.keys[smiNextMarkerIndex]
+        if nextMarkerIndex < allMarkers.endIndex { // time of next marker - or else time at end of media item (= duration)
+            let nextMarker: String = allMarkers[nextMarkerIndex]
             
-            smiNextMarkerTime = smiMarkerToTime[nextMarker] ?? sourceMediaItem.duration
-            tmiNextMarkerTime = tmiMarkerToTime[nextMarker] ?? targetMediaItem.duration
+            smiNextMarkerTime = smiMarkerToTime[nextMarker]!
+            tmiNextMarkerTime = tmiMarkerToTime[nextMarker]!
         } else {
             smiNextMarkerTime = sourceMediaItem.duration
             tmiNextMarkerTime = targetMediaItem.duration
         }
         
         result.sourceMarkerTimeUntilNextMarker = smiNextMarkerTime - smiStartMarkerTime
-        result.markerProgressPercentage = max(0, (result.sourceMarkerTime - smiStartMarkerTime) / result.sourceMarkerTimeUntilNextMarker)
-        
         result.targetMarkerTimeUntilNextMarker = tmiNextMarkerTime - tmiStartMarkerTime
+        result.markerProgressPercentage = max(0, (result.sourceMarkerTime - smiStartMarkerTime) / result.sourceMarkerTimeUntilNextMarker)
         result.targetMarkerTime = (result.markerProgressPercentage * result.targetMarkerTimeUntilNextMarker) + tmiStartMarkerTime
         
         return result
