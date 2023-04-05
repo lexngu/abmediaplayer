@@ -21,7 +21,7 @@ struct AlignedMarkerInformation  {
 }
 
 class AlignmentModel: ObservableObject {
-    private var alignmentBase: AlignmentBase
+    let alignmentBase: AlignmentBase
     
     let allMarkers: [String]
     let allMarkerTimes: [Double]
@@ -90,26 +90,31 @@ class AlignmentModel: ObservableObject {
         return Array(_allMarkerTimes).sorted()
     }
     
-    func inferLatestMarker(time: Double, mediaItem: MediaItem) -> String? {
-        if markerToMarkerTime[mediaItem] == nil {
+    func inferLatestMarker(time: Double, mediaItem: MediaItem?) -> String? {
+        if mediaItem == nil {
+            return nil
+        }
+        if markerToMarkerTime[mediaItem!] == nil {
             print("Error! Marker information requested for a non-existing mediaItem!")
             return nil
         }
-        let miMarkerToTime = markerToMarkerTime[mediaItem]!
-        
+        let miMarkerToTime = markerToMarkerTime[mediaItem!]!
+
         if time <= 0 {
-            return miMarkerToTime.keys.first!
+            return allMarkers.first!
         }
         
         var latestMarkerIdx = 0
-        for (idx, (_, _time)) in miMarkerToTime.enumerated() {
+        for (idx, marker) in allMarkers.enumerated() {
+            let _time = miMarkerToTime[marker]!
             if _time > time {
                 latestMarkerIdx = idx - 1
                 break
             }
             latestMarkerIdx = idx
         }
-        return Array(miMarkerToTime.keys)[latestMarkerIdx]
+
+        return allMarkers[latestMarkerIdx]
     }
     
     func calculateAlignedMarkerInformation(sourceMediaItem: MediaItem, marker: String, time: Double, targetMediaItem: MediaItem) -> AlignedMarkerInformation {

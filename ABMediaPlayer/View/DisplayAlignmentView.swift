@@ -10,7 +10,8 @@ import AVFoundation
 import AVKit
 
 func secondsToTimecodeString(time: Double) -> String {
-    let seconds = time.truncatingRemainder(dividingBy: 60)
+    let seconds = time.truncatingRemainder(dividingBy: Double(60))
+
     let minutes = (time - seconds).truncatingRemainder(dividingBy: 60*60) / 60
     let hours = (time > 3600) ? (time - seconds - minutes) / (60*60) : 0
     
@@ -18,8 +19,7 @@ func secondsToTimecodeString(time: Double) -> String {
 }
 
 struct DisplayAlignmentView: View {
-    @State private var alignmentBase: AlignmentBase
-    @State private var alignmentModel: AlignmentModel
+    @State var alignmentModel: AlignmentModel
     
     // UI constants
     private var singleSecondWidth: Double = 15
@@ -31,6 +31,8 @@ struct DisplayAlignmentView: View {
     @State private var currentMarker: String?
     
     @State private var timeOffset: Double = 0
+    @State private var requestedMarker: String?
+    @State private var requestedTime: Double?
     
     @State private var player = AVPlayer(url: URL(string: "https://cloud.winterkraut.de/index.php/s/fZGwEmkLs6spiR9/download?path=%2FNono%20(mp4%2C%20DDplus%20JOC)&files=20230305_nono.mp4")!)
     
@@ -59,6 +61,7 @@ struct DisplayAlignmentView: View {
                     context.draw(Text("MARKER MAP").foregroundColor(.gray), at: CGPoint(x: 0, y: 90), anchor: .topLeading)
 
                     context.draw(Text(secondsToTimecodeString(time: currentTime)).font(.system(size: 25)), at: CGPoint(x: 0, y: 25), anchor: .topLeading)
+                    context.draw(Text(currentMarker ?? "-").font(.system(size: 25)), at: CGPoint(x: size.width/2, y: 25), anchor: .topLeading)
 
                     context.transform = context.transform.translatedBy(x: 10, y: 115)
                     let latestMarkerTime = alignmentModel.allMarkerTimes.last
@@ -84,18 +87,31 @@ struct DisplayAlignmentView: View {
                     }
                 }.edgesIgnoringSafeArea(.all)
                 VStack {
-                    Picker("Marker", selection: $currentMarker) {
+                    Picker("Marker", selection: $requestedMarker) {
+                        Text("Jump to").tag(Optional<String>(nil))
                         ForEach(alignmentModel.allMarkers, id: \.self) { marker in
                             Text(marker).tag(Optional(marker)).font(.system(size: 25))
                         }
-                    }.pickerStyle(.wheel).position(x: 160, y: 85).frame(width: 170, height: 90)
+                    }.pickerStyle(.menu).position(x: 120, y: 110).frame(width: 170, height: 90).onChange(of: requestedMarker) { _ in
+                        if requestedMarker == nil {
+                            return
+                        }
+                        setCurrentMarker(newMarker: requestedMarker!)
+                        requestedMarker = nil
+                    }
                     VStack(alignment: .leading, spacing: 30) {
                         ForEach(Array(alignmentModel.allMediaItems.enumerated()), id: \.offset) { idx, mediaItem in
                             Button(action: {
                                 setCurrentMediaItem(newMediaItem: mediaItem)
                             }, label: { Text(mediaItem.name!).bold(currentMediaItem == mediaItem) })
                         }
-                    }.position(x: 60, y: 115)
+                    }.position(x: 60, y: 115).onChange(of: requestedTime) { _ in
+                        if requestedTime == nil {
+                            return
+                        }
+                        setCurrentTime(newCurrentTime: requestedTime!)
+                        requestedTime = nil
+                    }
                 }
             }
         }.onAppear() {
@@ -107,25 +123,25 @@ struct DisplayAlignmentView: View {
             }
             
             player.addPeriodicTimeObserver(forInterval: CMTime(seconds: 1, preferredTimescale: CMTimeScale(NSEC_PER_SEC)), queue: .main) { _ in
-                let playerCurrentTimeSeconds = Double(player.currentTime().seconds)
+                let playerCurrentTimeSeconds = player.currentTime().seconds
 
                 // update currentTime
                 currentTime = playerCurrentTimeSeconds
                 
                 // update currentMarker
                 if currentMediaItem != nil {
-                    currentMarker = alignmentModel.inferLatestMarker(time: currentTime, mediaItem: currentMediaItem!)
+                    currentMarker = alignmentModel.inferLatestMarker(time: currentTime, mediaItem: currentMediaItem)
                 }
             }
         }
     }
     
-    init(alignmentBase: AlignmentBase, alignmentModel: AlignmentModel) {
-        self.alignmentBase = alignmentBase
+    init(alignmentModel: AlignmentModel) {
         self.alignmentModel = alignmentModel
     }
     
     func setCurrentTime(newCurrentTime: Double) {
+        print("set to \(newCurrentTime)")
         currentTime = newCurrentTime
         
         if player.currentItem != nil {
@@ -135,9 +151,15 @@ struct DisplayAlignmentView: View {
     
     func setCurrentMediaItem(newMediaItem: MediaItem) {
         let alignedMarkerInformation = alignmentModel.calculateAlignedMarkerInformation(sourceMediaItem: currentMediaItem!, marker: currentMarker!, time: currentTime, targetMediaItem: newMediaItem)
-
+        
         currentMediaItem = newMediaItem
-        setCurrentTime(newCurrentTime: alignedMarkerInformation.targetMarkerTime)
+        requestedTime = alignedMarkerInformation.targetMarkerTime
+    }
+    
+    func setCurrentMarker(newMarker: String) {
+        currentMarker = newMarker
+    
+        setCurrentTime(newCurrentTime: alignmentModel.markerToMarkerTime[currentMediaItem!]![currentMarker!]!)
     }
 }
 
@@ -147,7 +169,7 @@ struct DisplayAlignmentView_Previews: PreviewProvider {
             let alignmentBase = try PersistenceController.preview.container.viewContext.fetch(AlignmentBase.fetchRequest()).last!
             let alignmentModel = AlignmentModel(alignmentBase: alignmentBase)
             
-            return AnyView(DisplayAlignmentView(alignmentBase: alignmentBase, alignmentModel: alignmentModel))
+            return AnyView(DisplayAlignmentView(alignmentModel: alignmentModel))
         } catch {
             return AnyView(Text("error"))
         }
