@@ -15,6 +15,8 @@
 		117693F829BCE0D600DE4036 /* ABMediaPlayerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117693F729BCE0D600DE4036 /* ABMediaPlayerTests.swift */; };
 		1176940229BCE0D600DE4036 /* ABMediaPlayerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1176940129BCE0D600DE4036 /* ABMediaPlayerUITests.swift */; };
 		1176940429BCE0D600DE4036 /* ABMediaPlayerUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1176940329BCE0D600DE4036 /* ABMediaPlayerUITestsLaunchTests.swift */; };
+		1187457829DE262300D25F40 /* MarkerPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1187457729DE262300D25F40 /* MarkerPickerView.swift */; };
+		1187457A29DE29A000D25F40 /* MediaPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1187457929DE29A000D25F40 /* MediaPickerView.swift */; };
 		118B83EC29D6EBC60093C8A7 /* ManageMediaSingleItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 118B83EB29D6EBC60093C8A7 /* ManageMediaSingleItemView.swift */; };
 		11BEC11E29D19D7400580119 /* MediaItemRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11BEC11D29D19D7400580119 /* MediaItemRowView.swift */; };
 		11D8F83229CA39980031AF9D /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D8F83129CA39980031AF9D /* RootView.swift */; };
@@ -59,6 +61,8 @@
 		1176940129BCE0D600DE4036 /* ABMediaPlayerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ABMediaPlayerUITests.swift; sourceTree = "<group>"; };
 		1176940329BCE0D600DE4036 /* ABMediaPlayerUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ABMediaPlayerUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		11796E8B29D78C9B0068B55A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1187457729DE262300D25F40 /* MarkerPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkerPickerView.swift; sourceTree = "<group>"; };
+		1187457929DE29A000D25F40 /* MediaPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPickerView.swift; sourceTree = "<group>"; };
 		118B83EB29D6EBC60093C8A7 /* ManageMediaSingleItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageMediaSingleItemView.swift; sourceTree = "<group>"; };
 		11BEC11D29D19D7400580119 /* MediaItemRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaItemRowView.swift; sourceTree = "<group>"; };
 		11D8F83129CA39980031AF9D /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
@@ -170,6 +174,8 @@
 				11D8F83129CA39980031AF9D /* RootView.swift */,
 				11EC440C29DAC80C00120B19 /* PlayMediaView.swift */,
 				11EC440E29DACA2A00120B19 /* DisplayAlignmentView.swift */,
+				1187457729DE262300D25F40 /* MarkerPickerView.swift */,
+				1187457929DE29A000D25F40 /* MediaPickerView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -330,7 +336,9 @@
 				11D8F83829CA49FD0031AF9D /* ManageAlignmentBaseView.swift in Sources */,
 				11EC441129DACAE200120B19 /* AlignmentModel.swift in Sources */,
 				11BEC11E29D19D7400580119 /* MediaItemRowView.swift in Sources */,
+				1187457A29DE29A000D25F40 /* MediaPickerView.swift in Sources */,
 				118B83EC29D6EBC60093C8A7 /* ManageMediaSingleItemView.swift in Sources */,
+				1187457829DE262300D25F40 /* MarkerPickerView.swift in Sources */,
 				11D8F83429CA3D680031AF9D /* ManageMediaView.swift in Sources */,
 				117693E629BCE0D300DE4036 /* ABMediaPlayerApp.swift in Sources */,
 				1134DE5329D6CE1000A5A712 /* PersistenceController.swift in Sources */,
