@@ -108,7 +108,7 @@ class AlignmentModel: ObservableObject {
         for (idx, marker) in allMarkers.enumerated() {
             let _time = miMarkerToTime[marker]!
             if _time > time {
-                latestMarkerIdx = idx - 1
+                latestMarkerIdx = max(0, idx - 1)
                 break
             }
             latestMarkerIdx = idx
@@ -126,7 +126,7 @@ class AlignmentModel: ObservableObject {
             return result
         }
         let nextMarkerIndex = allMarkers.index(after: markerIndex!)
-
+        
         if markerToMarkerTime[sourceMediaItem] == nil || markerToMarkerTime[targetMediaItem] == nil {
             print("Error! sourceMediaItem or targetMediaItem is nil!")
             return result
