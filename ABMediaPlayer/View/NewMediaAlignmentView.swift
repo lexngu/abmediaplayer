@@ -20,7 +20,7 @@ struct NewMediaAlignmentView: View {
     private var availableMediaItems: FetchedResults<MediaItem>
     
     @State private var selectedMediaItem: MediaItem?
-    @State var markers: String = ""
+    @State private var markers: String = ""
     @Binding var isShowingNewMediaAlignmentView: Bool
     @Binding var alignmentBase: AlignmentBase
     @State private var createButtonDisabled = true
@@ -45,6 +45,8 @@ struct NewMediaAlignmentView: View {
         newMediaAlignment.id = UUID()
         newMediaAlignment.alignmentBase = alignmentBase
         newMediaAlignment.mediaItem = selectedMediaItem
+        newMediaAlignment.markers = markers
+        
         do {
             try viewContext.save()
         } catch {
