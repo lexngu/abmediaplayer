@@ -22,6 +22,11 @@ struct PersistenceController {
             newItem.size = 1234
             newItem.format = "MPEG-4"
             newItem.duration = 24
+            do {
+                newItem.bookmarkData = try URL(string: "https://cloud.winterkraut.de/index.php/s/fZGwEmkLs6spiR9/download?path=%2FNono%20(mp4%2C%20DDplus%20JOC)&files=20230305_nono.mp4")?.bookmarkData()
+            } catch {
+                print("ERROR!")
+            }
             mediaItems.append(newItem)
         }
         
