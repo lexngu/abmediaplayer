@@ -12,15 +12,20 @@ struct ManageMediaSingleItemView: View {
     
     @Environment(\.managedObjectContext) private var viewContext
     
-    private var player: AVPlayer
+    @State private var player: AVPlayer
     
-    var mediaItem: MediaItem
+    @State private var mediaItem: MediaItem
     
     var body: some View {
-        VStack {
-            Text(mediaItem.name ?? "")
-            Text(player.error.debugDescription)
+        VStack() {
+            Text(mediaItem.name ?? "").font(.system(.title))
             VideoPlayer(player: player).frame(width: 300, height: 200, alignment: .center)
+            List(mediaItem.mediaAlignments?.allObjects as? [MediaAlignment] ?? []) { mediaAlignment in
+                Section(mediaAlignment.alignmentBase?.name ?? "") {
+                    Text(mediaAlignment.markers ?? "")
+                }
+            }
+            Spacer()
         }
     }
     
@@ -28,7 +33,7 @@ struct ManageMediaSingleItemView: View {
         self.mediaItem = mediaItem
         var isStale = false
         do {
-            let url = try URL(resolvingBookmarkData: mediaItem.bookmarkData!, bookmarkDataIsStale: &isStale)
+            let url = try URL(resolvingBookmarkData: mediaItem.bookmarkData ?? Data(), bookmarkDataIsStale: &isStale)
             if isStale {
                 print("\(url) is stale!")
             }
@@ -45,12 +50,13 @@ struct ManageMediaSingleItemView: View {
 struct ManageMediaSingleItemView_Previews: PreviewProvider {
     static var previews: some View {
         let viewContext = PersistenceController.preview.container.viewContext
-        let mediaItem = MediaItem(context: viewContext)
-        mediaItem.name = "20230305_nono.mp4"
-        mediaItem.size = 268343715
-        mediaItem.format = "MPEG-4"
-        mediaItem.duration = 2049.183
         
-        return ManageMediaSingleItemView(mediaItem: mediaItem).environment(\.managedObjectContext, viewContext)
+        do {
+            let mediaItem = try viewContext.fetch(MediaItem.fetchRequest()).first!
+            return AnyView(ManageMediaSingleItemView(mediaItem: mediaItem).environment(\.managedObjectContext, viewContext))
+        } catch {
+            return AnyView(Text("Error!"))
+        }
+        
     }
 }
