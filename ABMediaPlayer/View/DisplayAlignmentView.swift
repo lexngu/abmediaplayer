@@ -66,7 +66,6 @@ struct DisplayAlignmentView: View {
                         requestedMarker = nil
                     }
                     MediaPickerView(alignmentModel: $alignmentModel, requestedMediaItem: $requestedMediaItem).position(x: 50, y: 100).onChange(of: requestedMediaItem) { _ in
-                        print("requested \(requestedMediaItem?.name)")
                         if requestedMediaItem == nil {
                             return
                         }
@@ -85,7 +84,7 @@ struct DisplayAlignmentView: View {
     
     func setCurrentTime(newCurrentTime: Double) {
         currentTime = newCurrentTime
-        
+        currentMarker = alignmentModel.inferLatestMarker(time: currentTime, mediaItem: currentMediaItem)
         if currentPlayer?.currentItem != nil {
             currentPlayer!.seek(to: CMTime(seconds: newCurrentTime, preferredTimescale: CMTimeScale(NSEC_PER_SEC)))
         }
@@ -120,6 +119,7 @@ struct DisplayAlignmentView: View {
         }
         if newPlayerItem != nil {
             switchPlayerItem(newPlayerItem: newPlayerItem!)
+            setCurrentTime(newCurrentTime: requestedTime ?? 0)
         } else {
             print("ERROR")
         }
@@ -140,18 +140,13 @@ struct DisplayAlignmentView: View {
         }
         
         newPlayer.replaceCurrentItem(with: newPlayerItem)
-        let _currentTime = currentPlayer!.currentTime()
-        if (_currentTime.isValid) {
-            newPlayer.seek(to: currentPlayer!.currentTime())
-        }
+        
         newPlayer.play()
-        print("play newPlayer")
         
         currentPlayer!.pause()
-        print("pause currentPlayer")
+        
         if currentPlayerObserverToken != nil {
             currentPlayer!.removeTimeObserver(currentPlayerObserverToken as Any)
-            print("> remove observer")
         }
         
         currentPlayer = newPlayer
@@ -166,7 +161,6 @@ struct DisplayAlignmentView: View {
                 currentMarker = alignmentModel.inferLatestMarker(time: currentTime, mediaItem: currentMediaItem)
             }
         }
-        print("> add observer")
     }
     
     func setCurrentMarker(newMarker: String) {
