@@ -36,7 +36,7 @@ struct ManageAlignmentBaseDetailView: View {
                 }
             }
         }.sheet(isPresented: $isShowingNewMediaAlignmentView) {
-            NewMediaAlignmentView(markers: alignmentBase.markers ?? "", isShowingNewMediaAlignmentView: $isShowingNewMediaAlignmentView, alignmentBase: $alignmentBase).environment(\.managedObjectContext, viewContext)
+            NewMediaAlignmentView(isShowingNewMediaAlignmentView: $isShowingNewMediaAlignmentView, alignmentBase: $alignmentBase).environment(\.managedObjectContext, viewContext)
         }
     }
 }
