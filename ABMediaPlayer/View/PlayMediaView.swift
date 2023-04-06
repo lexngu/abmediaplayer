@@ -18,13 +18,9 @@ struct PlayMediaView: View {
     @State private var selectedAlignmentBase: AlignmentBase?
     
     var body: some View {
-        VStack {
-            Text("Player")
-            Picker("Alignment base", selection: $selectedAlignmentBase) {
-                Text("Choose alignment base").tag(Optional<AlignmentBase>(nil))
-                ForEach(availableAlignmentBases) { item in
-                    Text(item.name!).tag(Optional(item))
-                }
+        NavigationView {
+            List(availableAlignmentBases) { alignmentBase in
+                NavigationLink(alignmentBase.name!, destination: DisplayAlignmentView(alignmentModel: AlignmentModel(alignmentBase: alignmentBase)))
             }
         }
     }
