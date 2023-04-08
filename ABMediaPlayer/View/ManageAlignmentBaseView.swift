@@ -20,18 +20,22 @@ struct ManageAlignmentBaseView: View {
     @State private var isShowingNewAlignmentBaseView = false
         
     var body: some View {
-        Button { isShowingNewAlignmentBaseView.toggle() } label: {
-            Label("Add alignment base", systemImage: "plus")
-        }.sheet(isPresented: $isShowingNewAlignmentBaseView) {
-            NewAlignmentBaseView(isShowingNewAlignmentBaseView: $isShowingNewAlignmentBaseView).frame(minWidth: 200, minHeight: 200)
-        }
-        List(availableAlignmentBases) { item in
-            NavigationLink(item.name!, value: Route.alignMode(item))
+        VStack {
+            Button { isShowingNewAlignmentBaseView.toggle() } label: {
+                Label("Add alignment base", systemImage: "plus")
+            }.sheet(isPresented: $isShowingNewAlignmentBaseView) {
+                NewAlignmentBaseView(isShowingNewAlignmentBaseView: $isShowingNewAlignmentBaseView)
+            }
+            List {
+                ForEach(availableAlignmentBases) { item in
+                    NavigationLink(item.name!, value: Route.alignMode(item))
+                }.onDelete(perform: deleteAlignmentBase)
+            }
         }
     }
     
-    func deleteAlignmentBase(offsets: IndexSet) {
-        offsets.map { availableAlignmentBases[$0] }.forEach(viewContext.delete)
+    func deleteAlignmentBase(indexSet: IndexSet) {
+        indexSet.map { availableAlignmentBases[$0] }.forEach(viewContext.delete)
         do {
             try viewContext.save()
         } catch {

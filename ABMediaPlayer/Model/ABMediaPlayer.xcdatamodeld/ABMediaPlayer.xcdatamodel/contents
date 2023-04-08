@@ -4,7 +4,7 @@
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="markers" attributeType="String" defaultValueString=""/>
         <attribute name="name" attributeType="String"/>
-        <relationship name="mediaAlignments" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MediaAlignment" inverseName="alignmentBase" inverseEntity="MediaAlignment"/>
+        <relationship name="mediaAlignments" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="MediaAlignment" inverseName="alignmentBase" inverseEntity="MediaAlignment"/>
     </entity>
     <entity name="MediaAlignment" representedClassName="MediaAlignment" syncable="YES" codeGenerationType="class">
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
@@ -19,6 +19,6 @@
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="name" attributeType="String"/>
         <attribute name="size" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
-        <relationship name="mediaAlignments" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MediaAlignment" inverseName="mediaItem" inverseEntity="MediaAlignment"/>
+        <relationship name="mediaAlignments" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="MediaAlignment" inverseName="mediaItem" inverseEntity="MediaAlignment"/>
     </entity>
 </model>

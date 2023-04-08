@@ -19,12 +19,28 @@ struct ManageMediaView: View {
     @State private var fileImporterIsShowing = false
     
     var body: some View {
-        Button { fileImporterIsShowing.toggle() }
-        label: {
-            Label("Add local media", systemImage: "doc.badge.plus")
-        }.fileImporter(isPresented: $fileImporterIsShowing, allowedContentTypes: [UTType.audiovisualContent], onCompletion: fileImporterCompleted)
-        List(availableMediaItems, id: \.self) { item in
-            NavigationLink(item.name!, value: Route.mediaMode(item))
+        VStack {
+            Button { fileImporterIsShowing.toggle() }
+            label: {
+                Label("Add local media", systemImage: "doc.badge.plus")
+            }.fileImporter(isPresented: $fileImporterIsShowing, allowedContentTypes: [UTType.audiovisualContent], onCompletion: fileImporterCompleted)
+            List {
+                ForEach(availableMediaItems) { item in
+                    NavigationLink(item.name!, value: Route.mediaMode(item))
+                }.onDelete(perform: onDeleteMediaItem)
+            }
+        }
+    }
+    
+    func onDeleteMediaItem(indexSet: IndexSet) {
+        for index in indexSet {
+            viewContext.delete(availableMediaItems[index])
+        }
+        do {
+            try viewContext.save()
+        } catch {
+            let nsError = error as NSError
+            fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
         }
     }
     
