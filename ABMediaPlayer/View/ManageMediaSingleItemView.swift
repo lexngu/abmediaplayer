@@ -19,7 +19,7 @@ struct ManageMediaSingleItemView: View {
     var body: some View {
         VStack() {
             Text(mediaItem.name ?? "").font(.system(.title))
-            VideoPlayer(player: player).frame(width: 300, height: 200, alignment: .center)
+            VideoPlayer(player: player)
             List(mediaItem.mediaAlignments?.allObjects as? [MediaAlignment] ?? []) { mediaAlignment in
                 Section(mediaAlignment.alignmentBase?.name ?? "") {
                     Text(mediaAlignment.markers ?? "")

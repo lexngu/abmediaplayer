@@ -11,19 +11,13 @@ struct NewMediaAlignmentView: View {
     
     @Environment(\.managedObjectContext) private var viewContext
     
-    @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \AlignmentBase.name, ascending: true)])
-    private var availableAlignmentBases: FetchedResults<AlignmentBase>
-    
-    @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \MediaItem.name, ascending: true)])
-    private var availableMediaItems: FetchedResults<MediaItem>
-    
     @State private var selectedMediaItem: MediaItem?
-    @State private var markers: String = ""
-    @Binding var isShowingNewMediaAlignmentView: Bool
-    @Binding var alignmentBase: AlignmentBase
+    @State private var markers: String = "marker,0"
     @State private var createButtonDisabled = true
+    
+    @State var alignmentBase: AlignmentBase
+    @State var availableMediaItems: [MediaItem]
+    @Binding var isShowingNewMediaAlignmentView: Bool
     
     var body: some View {
         List {
@@ -35,7 +29,7 @@ struct NewMediaAlignmentView: View {
             }.onChange(of: selectedMediaItem) { tag in
                 createButtonDisabled = tag == Optional<MediaItem>(nil)
             }
-            TextEditor(text: $markers)
+            TextEditor(text: $markers).border(Color.gray)
             Button("Create", action: createButtonClicked).disabled(createButtonDisabled)
         }
     }
@@ -47,13 +41,13 @@ struct NewMediaAlignmentView: View {
         newMediaAlignment.mediaItem = selectedMediaItem
         newMediaAlignment.markers = markers
         
+        alignmentBase.addToMediaAlignments(newMediaAlignment)
         do {
             try viewContext.save()
         } catch {
             let nsError = error as NSError
             fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
         }
-        alignmentBase.objectWillChange.send()
         isShowingNewMediaAlignmentView.toggle()
     }
 }
@@ -62,6 +56,7 @@ struct NewMediaAlignmentView_Previews: PreviewProvider {
     static var previews: some View {
         let viewContext = PersistenceController.preview.container.viewContext
         
-        NewMediaAlignmentView(isShowingNewMediaAlignmentView: .constant(true), alignmentBase: .constant(AlignmentBase())).environment(\.managedObjectContext, viewContext)
+        NewMediaAlignmentView(alignmentBase: AlignmentBase(), availableMediaItems: [], isShowingNewMediaAlignmentView: .constant(true))
+            .environment(\.managedObjectContext, viewContext)
     }
 }

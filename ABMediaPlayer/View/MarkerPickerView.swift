@@ -13,7 +13,7 @@ struct MarkerPickerView: View {
     @Binding var requestedMarker: String?
     
     var body: some View {
-        Picker("Marker", selection: $requestedMarker) {
+        Picker("", selection: $requestedMarker) {
             Text("Jump to").tag(Optional<String>(nil))
             ForEach(alignmentModel.allMarkers, id: \.self) { marker in
                 Text(marker).tag(Optional(marker)).font(.system(size: 25))

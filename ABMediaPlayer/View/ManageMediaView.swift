@@ -19,21 +19,12 @@ struct ManageMediaView: View {
     @State private var fileImporterIsShowing = false
     
     var body: some View {
-        NavigationView {
-            List {
-                Button
-                { fileImporterIsShowing.toggle() }
-            label: {
-                Label("Add local media", systemImage: "doc.badge.plus")
-            }.fileImporter(isPresented: $fileImporterIsShowing, allowedContentTypes: [UTType.audiovisualContent], onCompletion: fileImporterCompleted)
-                ForEach(availableMediaItems) { item in
-                    NavigationLink {
-                        ManageMediaSingleItemView(mediaItem: item).environment(\.managedObjectContext, PersistenceController.shared.container.viewContext)
-                    } label: {
-                        MediaItemRowView(mediaItem: item)
-                    }
-                }.onDelete(perform: deleteLocalMediaItem)
-            }
+        Button { fileImporterIsShowing.toggle() }
+        label: {
+            Label("Add local media", systemImage: "doc.badge.plus")
+        }.fileImporter(isPresented: $fileImporterIsShowing, allowedContentTypes: [UTType.audiovisualContent], onCompletion: fileImporterCompleted)
+        List(availableMediaItems, id: \.self) { item in
+            NavigationLink(item.name!, value: Route.mediaMode(item))
         }
     }
     
@@ -80,6 +71,16 @@ struct ManageMediaView: View {
 
 struct ManageMediaView_Previews: PreviewProvider {
     static var previews: some View {
-        ManageMediaView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+        NavigationStack {
+            ManageMediaView()
+            .navigationDestination(for: Route.self) { route in
+                switch route {
+                case .mediaMode(let mediaItem):
+                    ManageMediaSingleItemView(mediaItem: mediaItem)
+                default:
+                    Text("ERROR")
+                }
+            }
+        }.environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
     }
 }

@@ -42,36 +42,38 @@ struct DisplayAlignmentView: View {
     @State var avPlayerItemCache: [MediaItem: AVPlayerItem] = [:]
     
     var body: some View {
-        VStack(spacing: 0) {
-            VideoPlayer(player: currentPlayer).frame(height: 200)
-            ZStack(alignment: .topLeading) {
-                Canvas { context, size in
-                    context.transform = context.transform.translatedBy(x: 0, y: 45)
-
-                    // Navigation
-                    context.draw(Text("CURRENT TIME").foregroundColor(.gray), at: CGPoint(x: 0, y: 0), anchor: .topLeading)
-                    context.draw(Text("CURRENT MARKER").foregroundColor(.gray), at: CGPoint(x: size.width/2, y: 0), anchor: .topLeading)
-                    context.draw(Text("CURRENT MEDIA").foregroundColor(.gray), at: CGPoint(x: 0, y: 90), anchor: .topLeading)
-
-                    context.draw(Text(secondsToTimecodeString(time: currentTime)).font(.system(size: 25)), at: CGPoint(x: 0, y: 25), anchor: .topLeading)
-                    context.draw(Text(currentMarker ?? "-").font(.system(size: 25)), at: CGPoint(x: size.width/2, y: 25), anchor: .topLeading)
-                    context.draw(Text(currentMediaItem?.name ?? "-").font(.system(size: 25)), at: CGPoint(x: 0, y: 110), anchor: .topLeading)
-                }.edgesIgnoringSafeArea(.all)
-                VStack {
-                    MarkerPickerView(alignmentModel: $alignmentModel, requestedMarker: $requestedMarker).position(x: 120, y: 110).frame(width: 170, height: 90).onChange(of: requestedMarker) { _ in
-                        if requestedMarker == nil {
-                            return
+        VStack {
+            VideoPlayer(player: currentPlayer)
+            ScrollView {
+                VStack(spacing: 20) {
+                    Group {
+                        VStack {
+                            Text("CURRENT TIME").font(.system(size: 12)).foregroundColor(Color.gray)
+                            Text(secondsToTimecodeString(time: currentTime)).font(.system(size: 25))
                         }
-                        setCurrentMarker(newMarker: requestedMarker!)
-                        requestedMarker = nil
-                    }
-                    MediaPickerView(alignmentModel: $alignmentModel, requestedMediaItem: $requestedMediaItem).position(x: 50, y: 100).onChange(of: requestedMediaItem) { _ in
-                        if requestedMediaItem == nil {
-                            return
+                        VStack {
+                            Text("CURRENT MARKER").font(.system(size: 12)).foregroundColor(Color.gray)
+                            Text(currentMarker ?? "-").font(.system(size: 25))
+                            MarkerPickerView(alignmentModel: $alignmentModel, requestedMarker: $requestedMarker).onChange(of: requestedMarker) { _ in
+                                if requestedMarker == nil {
+                                    return
+                                }
+                                setCurrentMarker(newMarker: requestedMarker!)
+                                requestedMarker = nil
+                            }.frame(maxWidth: 300).disabled(currentMediaItem == nil)
                         }
-                        setCurrentMediaItem(newMediaItem: requestedMediaItem!)
-                        requestedMediaItem = nil
-                    }
+                        VStack {
+                            Text("CURRENT MEDIA").font(.system(size: 12)).foregroundColor(Color.gray)
+                            Text(currentMediaItem?.name ?? "-").font(.system(size: 25))
+                            MediaPickerView(alignmentModel: $alignmentModel, requestedMediaItem: $requestedMediaItem).onChange(of: requestedMediaItem) { _ in
+                                if requestedMediaItem == nil {
+                                    return
+                                }
+                                setCurrentMediaItem(newMediaItem: requestedMediaItem!)
+                                requestedMediaItem = nil
+                            }.frame(maxWidth: 300)
+                        }
+                    }.frame(maxWidth: .infinity)
                 }
             }
         }.onAppear() {

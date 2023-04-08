@@ -15,21 +15,18 @@ struct ManageAlignmentBaseView: View {
         sortDescriptors: [NSSortDescriptor(keyPath: \AlignmentBase.name, ascending: true)])
     private var availableAlignmentBases: FetchedResults<AlignmentBase>
     
-    @State private var isShowingNewAlignmentBaseView = false
+    @Binding var navigationPath: NavigationPath
     
+    @State private var isShowingNewAlignmentBaseView = false
+        
     var body: some View {
-        NavigationStack {
-            List {
-                Button { isShowingNewAlignmentBaseView.toggle() } label: {
-                    Label("Add alignment base", systemImage: "plus")
-                }.sheet(isPresented: $isShowingNewAlignmentBaseView) {
-                    NewAlignmentBaseView(isShowingNewAlignmentBaseView: $isShowingNewAlignmentBaseView)
-                }
-                ForEach(availableAlignmentBases) { item in
-                    NavigationLink(destination: ManageAlignmentBaseDetailView(alignmentBase: item)) { Text(item.name!) }
-                }.onDelete(perform: deleteAlignmentBase)
-            }
-            .navigationTitle("Alignments")
+        Button { isShowingNewAlignmentBaseView.toggle() } label: {
+            Label("Add alignment base", systemImage: "plus")
+        }.sheet(isPresented: $isShowingNewAlignmentBaseView) {
+            NewAlignmentBaseView(isShowingNewAlignmentBaseView: $isShowingNewAlignmentBaseView).frame(minWidth: 200, minHeight: 200)
+        }
+        List(availableAlignmentBases) { item in
+            NavigationLink(item.name!, value: Route.alignMode(item))
         }
     }
     
@@ -46,6 +43,17 @@ struct ManageAlignmentBaseView: View {
 
 struct AlignMediaView_Previews: PreviewProvider {
     static var previews: some View {
-        ManageAlignmentBaseView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+        NavigationStack {
+            ManageAlignmentBaseView(navigationPath: .constant(NavigationPath()))
+                .navigationDestination(for: Route.self) { route in
+                    switch route {
+                    case .alignMode(let alignmentBase):
+                        ManageAlignmentBaseDetailView(alignmentBase: alignmentBase)
+                    default:
+                        Text("ERROR")
+                    }
+                }
+        }
+        .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
     }
 }

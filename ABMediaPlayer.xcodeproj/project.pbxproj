@@ -18,6 +18,7 @@
 		1187457829DE262300D25F40 /* MarkerPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1187457729DE262300D25F40 /* MarkerPickerView.swift */; };
 		1187457A29DE29A000D25F40 /* MediaPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1187457929DE29A000D25F40 /* MediaPickerView.swift */; };
 		118B83EC29D6EBC60093C8A7 /* ManageMediaSingleItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 118B83EB29D6EBC60093C8A7 /* ManageMediaSingleItemView.swift */; };
+		11B9ADE629DF45400052CDAB /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11B9ADE529DF453F0052CDAB /* AVKit.framework */; };
 		11BEC11E29D19D7400580119 /* MediaItemRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11BEC11D29D19D7400580119 /* MediaItemRowView.swift */; };
 		11D8F83229CA39980031AF9D /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D8F83129CA39980031AF9D /* RootView.swift */; };
 		11D8F83429CA3D680031AF9D /* ManageMediaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D8F83329CA3D680031AF9D /* ManageMediaView.swift */; };
@@ -64,6 +65,7 @@
 		1187457729DE262300D25F40 /* MarkerPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkerPickerView.swift; sourceTree = "<group>"; };
 		1187457929DE29A000D25F40 /* MediaPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPickerView.swift; sourceTree = "<group>"; };
 		118B83EB29D6EBC60093C8A7 /* ManageMediaSingleItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageMediaSingleItemView.swift; sourceTree = "<group>"; };
+		11B9ADE529DF453F0052CDAB /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS16.4.sdk/System/Library/Frameworks/AVKit.framework; sourceTree = DEVELOPER_DIR; };
 		11BEC11D29D19D7400580119 /* MediaItemRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaItemRowView.swift; sourceTree = "<group>"; };
 		11D8F83129CA39980031AF9D /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		11D8F83329CA3D680031AF9D /* ManageMediaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageMediaView.swift; sourceTree = "<group>"; };
@@ -81,6 +83,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				11B9ADE629DF45400052CDAB /* AVKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -108,6 +111,7 @@
 				117693F629BCE0D600DE4036 /* ABMediaPlayerTests */,
 				1176940029BCE0D600DE4036 /* ABMediaPlayerUITests */,
 				117693E329BCE0D300DE4036 /* Products */,
+				11B9ADE429DF453F0052CDAB /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -159,6 +163,14 @@
 				1176940329BCE0D600DE4036 /* ABMediaPlayerUITestsLaunchTests.swift */,
 			);
 			path = ABMediaPlayerUITests;
+			sourceTree = "<group>";
+		};
+		11B9ADE429DF453F0052CDAB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				11B9ADE529DF453F0052CDAB /* AVKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		11EC440529D9B78500120B19 /* View */ = {

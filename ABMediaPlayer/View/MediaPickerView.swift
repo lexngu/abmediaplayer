@@ -13,7 +13,7 @@ struct MediaPickerView: View {
     @Binding var requestedMediaItem: MediaItem?
     
     var body: some View {
-        Picker("MediaItem", selection: $requestedMediaItem) {
+        Picker("", selection: $requestedMediaItem) {
             Text("Change to").tag(Optional<MediaItem>(nil))
             ForEach(alignmentModel.allMediaItems) { mediaItem in
                 Text(mediaItem.name ?? "NA").tag(Optional(mediaItem)).font(.system(size: 25))

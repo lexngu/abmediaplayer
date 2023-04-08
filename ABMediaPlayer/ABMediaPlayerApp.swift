@@ -6,10 +6,18 @@
 //
 
 import SwiftUI
+import AVFoundation
 
 @main
 struct ABMediaPlayerApp: App {
     let persistenceController = PersistenceController.shared
+    
+    init() {
+        try? AVAudioSession.sharedInstance().setCategory(
+            AVAudioSession.Category.playback,
+            options: AVAudioSession.CategoryOptions.mixWithOthers
+        )
+    }
     
     var body: some Scene {
         WindowGroup {

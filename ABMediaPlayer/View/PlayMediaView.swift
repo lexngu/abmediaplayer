@@ -8,26 +8,37 @@
 import SwiftUI
 
 struct PlayMediaView: View {
-    
     @Environment(\.managedObjectContext) private var viewContext
     
+    @Binding var navigationPath: NavigationPath
+        
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \AlignmentBase.name, ascending: true)])
     private var availableAlignmentBases: FetchedResults<AlignmentBase>
- 
-    @State private var selectedAlignmentBase: AlignmentBase?
-    
+         
     var body: some View {
-        NavigationView {
-            List(availableAlignmentBases) { alignmentBase in
-                NavigationLink(alignmentBase.name!, destination: DisplayAlignmentView(alignmentModel: AlignmentModel(alignmentBase: alignmentBase)))
-            }
+        List(availableAlignmentBases) { alignmentBase in
+            NavigationLink(alignmentBase.name!, value: Route.playMode(alignmentBase)).environment(\.managedObjectContext, viewContext)
         }
     }
 }
 
-struct PlayMediaAlignmentView_Previews: PreviewProvider {
+struct PlayMediaView_Previews: PreviewProvider {
     static var previews: some View {
-        PlayMediaView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+        
+        let viewContext = PersistenceController.preview.container.viewContext
+        
+        NavigationStack {
+            PlayMediaView(navigationPath: .constant(NavigationPath()))
+                .environment(\.managedObjectContext, viewContext)
+                .navigationDestination(for: Route.self) { route in
+                    switch route {
+                    case .playMode(let alignmentBase):
+                        DisplayAlignmentView(alignmentModel: AlignmentModel(alignmentBase: alignmentBase))
+                    default:
+                        Text("ERROR")
+                    }
+                }
+        }
     }
 }

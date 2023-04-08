@@ -12,16 +12,18 @@ struct NewAlignmentBaseView: View {
     @Environment(\.managedObjectContext) private var viewContext
     
     @State private var name = ""
-    @State private var markers = ""
+    @State private var markers = "marker,0"
     @Binding var isShowingNewAlignmentBaseView : Bool;
     
     var body: some View {
-        Form {
-            TextField(text: $name, prompt: Text("Name")) {
-                Text("Name")
+        List {
+            Form {
+                TextField(text: $name, prompt: Text("Name")) {
+                    Text("Name")
+                }
+                TextEditor(text: $markers).border(Color.gray)
+                Button("Create", action: createButtonClicked)
             }
-            TextEditor(text: $markers)
-            Button("Create", action: createButtonClicked)
         }
     }
     
