@@ -29,21 +29,19 @@ struct DisplayAlignmentView: View {
     @State var currentMediaItem: MediaItem?
     @State var currentTime: Double = 0
     @State var currentMarker: String?
-    @State var currentPlayer: AVPlayer?
     @State var currentPlayerObserverToken: Any?
     
     @State var requestedMarker: String?
     @State var requestedTime: Double?
     @State var requestedMediaItem: MediaItem?
     
-    var playerA = AVPlayer()
-    var playerB = AVPlayer()
+    private let player = AVPlayer()
     
     @State var avPlayerItemCache: [MediaItem: AVPlayerItem] = [:]
     
     var body: some View {
         VStack {
-            VideoPlayer(player: currentPlayer)
+            VideoPlayer(player: player)
             ScrollView {
                 VStack(spacing: 20) {
                     Group {
@@ -80,15 +78,29 @@ struct DisplayAlignmentView: View {
             if currentMediaItem != nil {
                 currentMarker = alignmentModel.inferLatestMarker(time: currentTime, mediaItem: currentMediaItem!)
             }
-            playerA.sourceClock = playerB.sourceClock
+            
+            currentPlayerObserverToken = player.addPeriodicTimeObserver(forInterval: CMTime(seconds: 0.1, preferredTimescale: CMTimeScale(NSEC_PER_SEC)), queue: .main) { _ in
+                let playerCurrentTimeSeconds = player.currentTime().seconds
+
+                // update currentTime
+                currentTime = playerCurrentTimeSeconds
+                
+                // update currentMarker
+                if currentMediaItem != nil {
+                    currentMarker = alignmentModel.inferLatestMarker(time: currentTime, mediaItem: currentMediaItem)
+                }
+            }
+        }
+        .onDisappear() {
+            player.removeTimeObserver(currentPlayerObserverToken)
         }
     }
     
     func setCurrentTime(newCurrentTime: Double) {
         currentTime = newCurrentTime
         currentMarker = alignmentModel.inferLatestMarker(time: currentTime, mediaItem: currentMediaItem)
-        if currentPlayer?.currentItem != nil {
-            currentPlayer!.seek(to: CMTime(seconds: newCurrentTime, preferredTimescale: CMTimeScale(NSEC_PER_SEC)))
+        if player.currentItem != nil {
+            player.seek(to: CMTime(seconds: newCurrentTime, preferredTimescale: CMTimeScale(NSEC_PER_SEC)))
         }
     }
     
@@ -130,39 +142,8 @@ struct DisplayAlignmentView: View {
     }
     
     func switchPlayerItem(newPlayerItem: AVPlayerItem) {
-        let newPlayer: AVPlayer
-        if (currentPlayer == nil) {
-            currentPlayer = playerA
-        }
-        
-        if (currentPlayer == playerA) {
-            newPlayer = playerB
-        } else {
-            newPlayer = playerA
-        }
-        
-        newPlayer.replaceCurrentItem(with: newPlayerItem)
-        
-        newPlayer.play()
-        
-        currentPlayer!.pause()
-        
-        if currentPlayerObserverToken != nil {
-            currentPlayer!.removeTimeObserver(currentPlayerObserverToken as Any)
-        }
-        
-        currentPlayer = newPlayer
-        currentPlayerObserverToken = newPlayer.addPeriodicTimeObserver(forInterval: CMTime(seconds: 0.1, preferredTimescale: CMTimeScale(NSEC_PER_SEC)), queue: .main) { _ in
-            let playerCurrentTimeSeconds = currentPlayer!.currentTime().seconds
-
-            // update currentTime
-            currentTime = playerCurrentTimeSeconds
-            
-            // update currentMarker
-            if currentMediaItem != nil {
-                currentMarker = alignmentModel.inferLatestMarker(time: currentTime, mediaItem: currentMediaItem)
-            }
-        }
+        player.replaceCurrentItem(with: newPlayerItem)
+        player.play()
     }
     
     func setCurrentMarker(newMarker: String) {
