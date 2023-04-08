@@ -11,14 +11,14 @@ import AVFoundation
 @main
 struct ABMediaPlayerApp: App {
     let persistenceController = PersistenceController.shared
-    
+#if os(iOS)
     init() {
         try? AVAudioSession.sharedInstance().setCategory(
             AVAudioSession.Category.playback,
             options: AVAudioSession.CategoryOptions.mixWithOthers
         )
     }
-    
+#endif
     var body: some Scene {
         WindowGroup {
             RootView()
