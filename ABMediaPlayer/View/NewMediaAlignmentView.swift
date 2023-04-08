@@ -29,7 +29,7 @@ struct NewMediaAlignmentView: View {
             }.onChange(of: selectedMediaItem) { tag in
                 createButtonDisabled = tag == Optional<MediaItem>(nil)
             }
-            TextEditor(text: $markers).border(Color.gray)
+            TextEditor(text: $markers).border(Color.gray).frame(minHeight: 200)
             Button("Create", action: createButtonClicked).disabled(createButtonDisabled)
         }
     }
