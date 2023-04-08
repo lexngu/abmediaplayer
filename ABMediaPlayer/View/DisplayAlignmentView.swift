@@ -36,6 +36,7 @@ struct DisplayAlignmentView: View {
     @State var requestedMediaItem: MediaItem?
     
     @State var player = AVPlayer()
+    @State var currentMediaItemInfo: String?
     
     @State var avPlayerItemCache: [MediaItem: AVPlayerItem] = [:]
     
@@ -70,6 +71,10 @@ struct DisplayAlignmentView: View {
                                 setCurrentMediaItem(newMediaItem: requestedMediaItem!)
                                 requestedMediaItem = nil
                             }.frame(maxWidth: 300)
+                        }
+                        VStack {
+                            Text("CURRENT MEDIA INFORMATION").font(.system(size: 12)).foregroundColor(Color.gray)
+                            Text(currentMediaItemInfo ?? "").font(.system(size: 14))
                         }
                     }.frame(maxWidth: .infinity)
                 }
@@ -115,6 +120,21 @@ struct DisplayAlignmentView: View {
         if newPlayerItem != nil {
             switchPlayerItem(newPlayerItem: newPlayerItem!)
             setCurrentTime(newCurrentTime: requestedTime ?? 0)
+            
+            async {
+                do {
+                    currentMediaItemInfo = ""
+                    
+                    let tracks = try await player.currentItem!.asset.load(.tracks)
+                    
+                    for track in tracks {
+                        let formatDescriptions = try await track.load(.formatDescriptions)
+                        currentMediaItemInfo! += formatDescriptions.debugDescription
+                    }
+                } catch {
+                    print("ERROR")
+                }
+            }
         } else {
             print("ERROR")
         }
