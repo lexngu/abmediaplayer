@@ -35,7 +35,7 @@ struct DisplayAlignmentView: View {
     @State var requestedTime: Double?
     @State var requestedMediaItem: MediaItem?
     
-    private let player = AVPlayer()
+    @State var player = AVPlayer()
     
     @State var avPlayerItemCache: [MediaItem: AVPlayerItem] = [:]
     
@@ -74,25 +74,6 @@ struct DisplayAlignmentView: View {
                     }.frame(maxWidth: .infinity)
                 }
             }
-        }.onAppear() {
-            if currentMediaItem != nil {
-                currentMarker = alignmentModel.inferLatestMarker(time: currentTime, mediaItem: currentMediaItem!)
-            }
-            
-            currentPlayerObserverToken = player.addPeriodicTimeObserver(forInterval: CMTime(seconds: 0.1, preferredTimescale: CMTimeScale(NSEC_PER_SEC)), queue: .main) { _ in
-                let playerCurrentTimeSeconds = player.currentTime().seconds
-
-                // update currentTime
-                currentTime = playerCurrentTimeSeconds
-                
-                // update currentMarker
-                if currentMediaItem != nil {
-                    currentMarker = alignmentModel.inferLatestMarker(time: currentTime, mediaItem: currentMediaItem)
-                }
-            }
-        }
-        .onDisappear() {
-            player.removeTimeObserver(currentPlayerObserverToken)
         }
     }
     
@@ -144,6 +125,20 @@ struct DisplayAlignmentView: View {
     func switchPlayerItem(newPlayerItem: AVPlayerItem) {
         player.replaceCurrentItem(with: newPlayerItem)
         player.play()
+        
+        if currentPlayerObserverToken == nil {
+            currentPlayerObserverToken = player.addPeriodicTimeObserver(forInterval: CMTime(seconds: 0.1, preferredTimescale: CMTimeScale(NSEC_PER_SEC)), queue: .main) { _ in
+                let playerCurrentTimeSeconds = player.currentTime().seconds
+
+                // update currentTime
+                currentTime = playerCurrentTimeSeconds
+                
+                // update currentMarker
+                if currentMediaItem != nil {
+                    currentMarker = alignmentModel.inferLatestMarker(time: currentTime, mediaItem: currentMediaItem)
+                }
+            }
+        }
     }
     
     func setCurrentMarker(newMarker: String) {
