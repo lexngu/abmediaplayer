@@ -79,6 +79,8 @@ struct DisplayAlignmentView: View {
                     }.frame(maxWidth: .infinity)
                 }
             }
+        }.onDisappear() {
+            player.pause()
         }
     }
     
