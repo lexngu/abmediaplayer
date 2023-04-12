@@ -40,6 +40,8 @@ struct DisplayAlignmentView: View {
     
     @State var avPlayerItemCache: [MediaItem: AVPlayerItem] = [:]
     
+    @State var keepRelativeMarkerProgress: Bool = true
+    
     var body: some View {
         VStack {
             VideoPlayer(player: player)
@@ -72,6 +74,7 @@ struct DisplayAlignmentView: View {
                                 requestedMediaItem = nil
                             }.frame(maxWidth: 300)
                         }
+                        Toggle("Keep relative marker progress on change", isOn: $keepRelativeMarkerProgress).padding()
                         VStack {
                             Text("CURRENT MEDIA INFORMATION").font(.system(size: 12)).foregroundColor(Color.gray)
                             Text(currentMediaItemInfo ?? "").font(.system(size: 14))
@@ -98,9 +101,13 @@ struct DisplayAlignmentView: View {
                 return
             }
             
-            let alignedMarkerInformation = alignmentModel.calculateAlignedMarkerInformation(sourceMediaItem: currentMediaItem!, marker: currentMarker!, time: currentTime, targetMediaItem: newMediaItem)
-            
-            requestedTime = alignedMarkerInformation.targetMarkerTime
+            if keepRelativeMarkerProgress {
+                let alignedMarkerInformation = alignmentModel.calculateAlignedMarkerInformation(sourceMediaItem: currentMediaItem!, marker: currentMarker!, time: currentTime, targetMediaItem: newMediaItem)
+                
+                requestedTime = alignedMarkerInformation.targetMarkerTime
+            } else {
+                requestedTime = alignmentModel.markerToMarkerTime[newMediaItem]?[currentMarker!]
+            }
         }
         var newPlayerItem: AVPlayerItem?
         if let cachedItem = avPlayerItemCache[newMediaItem]  {
